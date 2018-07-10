@@ -8,6 +8,8 @@ var app = express();
 
 hbs.registerPartials(__dirname + '/views/partials')
 app.set('view engine', 'hbs');
+
+app.use(express.static(__dirname + '/public'));
 app.use((req, res, next)=>{
 	var now = new Date().toString();
 	var log = `${now}: ${req.method} ${req.url}`;
@@ -20,14 +22,12 @@ app.use((req, res, next)=>{
 	next();
 });
 
-app.use((req,res,next)=>{
-	res.render('maintenance.hbs', {
-		pageTitle: 'Maintenance page',
-		welcomeMessage: 'There\'s an error in this page!!'
-	})
-});
-
-app.use(express.static(__dirname + '/public'));
+// app.use((req,res,next)=>{
+// 	res.render('maintenance.hbs', {
+// 		pageTitle: 'Maintenance page',
+// 		welcomeMessage: 'There\'s an error in this page!!'
+// 	})
+// });
 
 
 hbs.registerHelper('getCurrentYear', ()=>{
@@ -57,6 +57,13 @@ app.get('/bad', (req, res)=>{
 		errorMessage: 'Bad response'
 	})
 })
+
+app.get('/schedule',(req,res)=>{
+	res.render('schedule.hbs', {
+		pageTitle: 'Schedules',
+		welcomeMessage: 'Welcome to my schedules'
+	});
+});
 
 
 app.listen(port, ()=>{
